@@ -3,8 +3,9 @@ var http = require('http'),
 
  var html = fs.readFile("./index.html", function (err, html) {
    http.createServer(function (req, res) {
-     res.write(html);
-     res.end();
+     res.writeHead(200, {"Content-Type":"application/json"});
+     res.write(JSON.stringify({nombre: "Anahi", username: "anahiza"}));
+    res.end();
    }).listen(3000);
 
  });
