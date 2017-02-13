@@ -1,5 +1,12 @@
 html(lang="es")
   head 
-    title= "Mi primera página con express"
+    title Mi primera página con express
   body
-    h1!=hoy 
+    h2 Anahi
+    - var arreglo = [1,2,3,4,5];
+    - for (var i = 0; i < arreglo.length; i++)
+      p Hola #{arreglo[i]}
+      p.
+        Hola haz click en #[a(href="santandreu.com.mx") este link] oiroir
+    each item in arreglo
+      p=item
