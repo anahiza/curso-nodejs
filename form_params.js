@@ -1,5 +1,9 @@
 var http = require('http'),
   fs = require('fs');
+var parser = require('./params_parser.js');
+var render = require('./render_view.js')
+
+var p = parser.parse;
 
  var html = fs.readFile("./index.html", function (err, html) {
    http.createServer(function (req, res) {
@@ -9,31 +13,13 @@ var http = require('http'),
     console.log("##############\n"); 
     console.log(req);    
     console.log("##############\n");
+    var html_string = html.toString();
+    var variables = html_string.match(/[^\{\}]+(?=\})/g);
 
-
-     var html_string = html.toString();
-     var variables = html_string.match(/[^\{\}]+(?=\})/g);
-     var nombre="anahi";
-     var arreglo_parametros=[];
-     var parametros = {};
-     if (req.url.indexOf("?")>0){
-      var url_data = req.url.split("?");
-      var arreglo_parametros = url_data[1].split("&");
-
-    }
-
-    for(var i = arreglo_parametros.length -1; i >= 0; i--) {
-      var parametro = arreglo_parametros[i];
-      var param_data = parametro.split("=");
-      parametros[param_data[0]] = param_data[1];
-    }
-
-     for (var i = variables.length - 1; i >= 0; i--){
-       var value = eval(variables[i]);
-       html_string = html_string.replace("{"+variables[i]+"}",parametros[variables[i]]);
-     }
+    var parametros = p(req);
+   
      res.writeHead(200, {"Content-Type":"text/html"});
-     res.write(html_string);
+     res.write(render(html_string,variables, parametros));
    }).listen(3000);
 
  });
