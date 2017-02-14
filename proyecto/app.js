@@ -1,6 +1,8 @@
 var express = require('express');
 
 var app = express();
+app.use('/estatico',express.static('public'));
+
 app.set('view engine', 'pug')
 
 app.get("/", function (req, res) {
