@@ -10,7 +10,7 @@ var userSchemmaJSON = {
   password: String
 }
 
-var user_schema = new Schema(userSchemmaJSON);
+
 var User = mongoose.model("User", user_schema);
 
 var app = express();
