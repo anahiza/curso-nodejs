@@ -21,9 +21,11 @@ app.get("/login", function (req, res) {
 })
 
 app.post("/users", function (req, res) {
-  var user = new User({email:req.body.email, password: req.body.password});
+  var user = new User({email:req.body.email,
+                      password: req.body.password, 
+                      password_confirmation:   req.body.passwor_confirmation});
   user.save(function (){
-    console.log(req.body.email+" - "+req.body.password)
+    console.log(req.body.email+" - "+req.body.password+"-"+req.body.password_confirmation)
     res.send("Guardamos tus datos")
 
   })
