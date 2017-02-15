@@ -2,14 +2,16 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 mongoose.connect("mongodb://localhost/fotos");
-
+var posibles_valores = ["M","F"];
+var email_match = [/^\w+([\.\+\-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/]
 var user_schema = new Schema({
   name:String,
-  username: String,
-  password:String,
-  email:String,
+  username: {type: String, required: true, maxlength:[50,"Username muy grande"]},
+  password:{type: String, minlength: [8,"Password es muy corto"]},
+  email:{type: String, required: true, match: email_match},
   birth:Date,
-  age:Number
+  age:{type: Number, min:[5,"La edad no puede ser menor que 5"], max:[100, "La edad no puede ser mayor que 100"]},
+  sex: {type: String, enum: {values: posibles_valores, message: "Opción no válida"}}
 });
 
 user_schema.virtual("password_confirmation").get(function(){
