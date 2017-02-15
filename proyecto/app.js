@@ -1,17 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var User = require('./models/users').User;
 
-mongoose.connect("mongodb://localhost/fotos");
-
-var userSchemmaJSON = {
-  email : String,
-  password: String
-}
-
-
-var User = mongoose.model("User", user_schema);
 
 var app = express();
 app.use('/public',express.static('public'));
@@ -33,6 +23,7 @@ app.get("/login", function (req, res) {
 app.post("/users", function (req, res) {
   var user = new User({email:req.body.email, password: req.body.password});
   user.save(function (){
+    console.log(req.body.email+" - "+req.body.password)
     res.send("Guardamos tus datos")
 
   })

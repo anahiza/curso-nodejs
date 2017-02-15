@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+mongoose.connect("mongodb://localhost/fotos");
+
 var user_schema = new Schema({
   name:String,
   username: String,
@@ -9,3 +11,7 @@ var user_schema = new Schema({
   birth:Date,
   age:Number
 });
+
+var User = mongoose.model("User", user_schema);
+
+module.exports.User = User;
