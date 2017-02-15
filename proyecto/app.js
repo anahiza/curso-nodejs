@@ -1,5 +1,17 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
+mongoose.connect("mongodb://localhost/fotos");
+
+var userSchemmaJSON = {
+  email : String,
+  password: String
+}
+
+var user_schema = new Schema(userSchemmaJSON);
+var User = mongoose.model("User", user_schema);
 
 var app = express();
 app.use('/public',express.static('public'));
@@ -12,13 +24,19 @@ app.get("/", function (req, res) {
 })
 
 app.get("/login", function (req, res) {
-  res.render("login")
+  User.find(function(err, doc){
+    console.log(doc)
+    res.render("login")
+  })
 })
 
 app.post("/users", function (req, res) {
-  console.log(req.body.email);
-  console.log(req.body.password);
-  res.send("Recibimos los datos")
+  var user = new User({email:req.body.email, password: req.body.password});
+  user.save(function (){
+    res.send("Guardamos tus datos")
+
+  })
+  
   
 })
 
