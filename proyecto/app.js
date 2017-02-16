@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var User = require('./models/users').User;
 var session = require('express-session');
+var router_app = require("./routes_app");
 
 var app = express();
 app.use('/public',express.static('public'));
@@ -55,5 +56,5 @@ app.post("/sessions", function (req, res) {
   })
 })
 
-
+app.use("/app", router_app);
 app.listen(3000);
