@@ -1,15 +1,21 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var User = require('./models/users').User;
-
+var session = require('express-session');
 
 var app = express();
 app.use('/public',express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'pug')
+app.use(session({
+  secret: "949jforijfoeinvkjer",
+  resave: false,
+  saveUninitialized: false
+}));
 
 app.get("/", function (req, res) {
+  console.log(req.session.user_id);
   res.render("index")
 })
 
@@ -44,8 +50,8 @@ app.post("/users", function (req, res) {
 
 app.post("/sessions", function (req, res) {  
   User.findOne({email: req.body.email, password: req.body.password}, function(err, docs){
-    console.log(docs);
-    res.send("OK");
+    req.session.user_id = docs._id;
+    res.send("OK")
   })
 })
 
