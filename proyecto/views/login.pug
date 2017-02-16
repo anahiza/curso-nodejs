@@ -3,11 +3,15 @@ block contenido
   form(action="/users", method="POST")
     div(class="form-group")
       label(for="email") E-mail:       
-      input(type="text", name="email", placeholder="E-mail" class="form-control")
+      input(type="text", name="email", placeholder="E-mail" class="form-control") 
+    div(class="form-group")
+      label(for="username") Username:       
+      input(type="text", name="username", placeholder="Nombre de Usuario" class="form-control")
     div(class="form-group")
       label(for="password") Contraseña: 
-      input(type="password" name="password" class="form-control")
-      laber(for="password_confirmation") confirma tu contraseña:
-      input(type="password" name="password_confirmation" class="form-control")
+      input(type="password" name="password" class="form-control" placeholder="Contraseña")
+      laber(for="password_confirmation") Confirma tu contraseña:
+      input(type="password" name="password_confirmation" class="form-control" placeholder="Escribe tu contraseña de nuevo")
+
     div
       input(type="submit" value="Enviar" class="btn")
