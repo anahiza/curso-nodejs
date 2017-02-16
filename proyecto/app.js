@@ -26,12 +26,14 @@ app.post("/users", function (req, res) {
                       password_confirmation:   req.body.password_confirmation,
                       username: req.body.username
                     });
-  user.save(function (err){
+  user.save().then(function(user_new){
+    res.send(user_new);
+  }, function(err){
     if (err){
       console.log(String(err));
+      res.send("No pudimos guardar tus datos");
     }
-    res.send("Guardamos tus datos")
-  })
+  });
   
   
 })
