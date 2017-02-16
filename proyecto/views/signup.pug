@@ -1,17 +1,20 @@
 extends ./layout.pug
 block contenido
-  form(action="/users", method="POST")
-    div(class="form-group")
-      label(for="email") E-mail:       
-      input(type="text", name="email", placeholder="E-mail" class="form-control") 
-    div(class="form-group")
-      label(for="username") Username:       
-      input(type="text", name="username", placeholder="Nombre de Usuario" class="form-control")
-    div(class="form-group")
-      label(for="password") Contraseña: 
-      input(type="password" name="password" class="form-control" placeholder="Contraseña")
-      label(for="password_confirmation") Confirma tu contraseña:
-      input(type="password" name="password_confirmation" class="form-control" placeholder="Escribe tu contraseña de nuevo")
-
-    div
-      input(type="submit" value="Enviar" class="btn")
+  div(class="col-md-6 remove-float center-block big-top-space")
+    form(action="/users", method="POST")
+      div(class="form-group")
+        label(for="email") E-mail:       
+        input(type="text", name="email", placeholder="E-mail" class="form-control") 
+      div(class="form-group")
+        label(for="username") Username:       
+        input(type="text", name="username", placeholder="Nombre de Usuario" class="form-control")
+      div(class="form-group")
+        label(for="password") Contraseña: 
+        input(type="password" name="password" class="form-control" placeholder="Contraseña")
+        label(for="password_confirmation") Confirma tu contraseña:
+        input(type="password" name="password_confirmation" class="form-control" placeholder="Escribe tu contraseña de nuevo")
+      div(class="row top-space")
+        div(class="col-xs-12 col-sm-6")
+          input(type="submit" value="Registrarme" class="btn btn-info")
+        div(class="col-xs-12 col-sm-6 text-right")
+          a(href="/login") Ya tengo una cuenta

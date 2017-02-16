@@ -1,8 +1,22 @@
+var User = require("../models/users").User
+
+
 module.exports = function (req, res, next){
   if (!req.session.user_id){
     res.redirect("/login");
   }
   else{
-    next();
+    User.findById(req.session.user_id, function(err, user){
+      if(err){
+        console.log(err)
+        res.redirect("/login")
+      }
+      else {
+        console.log(user)
+        res.locals= {user: user};
+        next();
+      }
+
+    })
   }
 }

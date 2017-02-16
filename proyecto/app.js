@@ -53,7 +53,7 @@ app.post("/users", function (req, res) {
 app.post("/sessions", function (req, res) {  
   User.findOne({email: req.body.email, password: req.body.password}, function(err, docs){
     req.session.user_id = docs._id;
-    res.send("OK");
+    res.redirect("/app");
   })
 })
 
