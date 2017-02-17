@@ -4,6 +4,7 @@ var User = require('./models/users').User;
 var cookieSession = require('cookie-session');
 var router_app = require("./routes_app");
 var session_middleware = require("./middlewares/session")
+var methodOverride = require("method-override");
 
 var app = express();
 app.use('/public',express.static('public'));
@@ -56,7 +57,7 @@ app.post("/sessions", function (req, res) {
     res.redirect("/app");
   })
 })
-
+app.use(methodOverride("_method"))
 app.use("/app", session_middleware)
 app.use("/app", router_app);
 app.listen(3000);
