@@ -23,8 +23,8 @@ router.route("/imagenes/:id")
      Imagen.findById(req.params.id, function(err, imagen){
       res.render("app/imagenes/show", {imagen: imagen})
     })
-
   })
+
   .put(function(req,res){
     Imagen.findById(req.params.id, function(err, imagen){
       imagen.titulo = req.body.titulo
@@ -37,16 +37,27 @@ router.route("/imagenes/:id")
         }
       })
     })
-
   })
+
   .delete(function(req, res) {
-    
+    Imagen.findOneAndRemove({_id: req.params.id}, function(err){
+      if (!err){        
+        res.redirect("/app/imagenes")
+      } else {
+        res.redirect("app/imagenes/"+req.params.id)
+      }
+
+    })    
   })
 
 router.route("/imagenes")
   .get(function(req, res){
     Imagen.find({}, function (err, imagenes){
-      if (err) {res.redirect("/app"); return;}
+      console.log(new Date().toString()+"\n"+imagenes)
+      if (err) {
+        res.redirect("/app"); 
+        return;
+      }
       res.render("app/imagenes/index", {imagenes: imagenes})
     }) 
 
