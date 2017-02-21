@@ -5,6 +5,7 @@ var cookieSession = require('cookie-session');
 var router_app = require("./routes_app");
 var session_middleware = require("./middlewares/session")
 var methodOverride = require("method-override");
+var formidable = require('express-formidable');
 
 var app = express();
 app.use('/public',express.static('public'));
@@ -60,4 +61,5 @@ app.post("/sessions", function (req, res) {
 app.use(methodOverride("_method"))
 app.use("/app", session_middleware)
 app.use("/app", router_app);
+app.use(formidable.parse({ keepExtensions: true}))
 app.listen(3000);

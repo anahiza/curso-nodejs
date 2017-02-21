@@ -60,6 +60,7 @@ router.route("/imagenes")
 
   })
   .post( function(req,res){
+    console.log(req.body.archivo)
     var data = {
       titulo: req.body.titulo,
       creator: res.locals.user._id
