@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var Imagen = require('./models/imagenes')
 var image_finder_middleware= require('./middlewares/find_image')
+var fs = require('fs')
+var extension = require('file-extension');
 
 router.get("/", function (req, res) {
   res.render("app/home");
@@ -50,7 +52,6 @@ router.route("/imagenes/:id")
 router.route("/imagenes")
   .get(function(req, res){
     Imagen.find({creator: res.locals.user._id}, function (err, imagenes){
-      console.log(new Date().toString()+"\n"+imagenes)
       if (err) {
         res.redirect("/app"); 
         return;
@@ -60,14 +61,16 @@ router.route("/imagenes")
 
   })
   .post( function(req,res){
+    var ext = extension(req.body.archivo.name)
     var data = {
       titulo: req.body.titulo,
-      creator: res.locals.user._id
+      creator: res.locals.user._id,
+      extension: ext
     }
-
     var imagen = new Imagen(data)    
     imagen.save( function(err){
       if (!err) {
+        fs.rename(req.body.archivo.path, "public/images/"+imagen._id+'.'+ext)
         res.redirect("/app/imagenes/"+imagen._id)
       }
       else{

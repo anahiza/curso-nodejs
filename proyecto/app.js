@@ -5,6 +5,7 @@ var cookieSession = require('cookie-session');
 var router_app = require("./routes_app");
 var session_middleware = require("./middlewares/session")
 var methodOverride = require("method-override");
+var formidable = require('express-formidable');
 
 var app = express();
 app.use('/public',express.static('public'));
@@ -17,6 +18,7 @@ app.use(cookieSession({
   keys: ["llave-1", "llave-2"]
 }));
 
+
 app.get("/", function (req, res) {
   console.log(req.session.user_id);
   res.render("index")
@@ -24,7 +26,6 @@ app.get("/", function (req, res) {
 
 app.get("/signup", function (req, res) {
   User.find(function(err, doc){
-    console.log(doc)
     res.render("signup")
   })
 })
@@ -60,4 +61,5 @@ app.post("/sessions", function (req, res) {
 app.use(methodOverride("_method"))
 app.use("/app", session_middleware)
 app.use("/app", router_app);
+app.use(formidable({keepExtensions: true}))
 app.listen(3000);
