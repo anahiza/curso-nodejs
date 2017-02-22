@@ -7,8 +7,11 @@ var session_middleware = require("./middlewares/session")
 var methodOverride = require("method-override");
 var formidable = require('express-formidable');
 var RedisStore = require('connect-redis')(session)
+var http = require('http')
+var realtime = require("./realtime")
 
 var app = express();
+var server = http.Server(app)
 app.use('/public',express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -21,6 +24,7 @@ var sessionMiddleware = session ( {
 
 app.use(sessionMiddleware)
 
+realtime(server, sessionMiddleware)
 
 app.get("/", function (req, res) {
   console.log(req.session.user_id);
@@ -65,5 +69,5 @@ app.use(methodOverride("_method"))
 app.use("/app", session_middleware)
 app.use("/app", router_app);
 app.use(formidable({ keepExtensions: true}))
-app.listen(3000);
+server.listen(3000);
 

@@ -4,6 +4,9 @@ var Imagen = require('./models/imagenes')
 var image_finder_middleware= require('./middlewares/find_image')
 var fs = require('fs')
 var extension = require('file-extension');
+var redis = require('redis');
+
+var client = redis.createClient();
 
 
 router.get("/", function (req, res) {
@@ -67,8 +70,7 @@ router.route("/imagenes")
     })
 
   })
-  .post( function(req,res){
-
+  .post(function(req,res){
     var ext = extension(req.body.archivo.name)
     var data = {
       titulo: req.body.titulo,
@@ -79,10 +81,12 @@ router.route("/imagenes")
 
     imagen.save( function(err){
       if (!err) {
-        fs.rename(req.body.archivo.path, "public/images/"+imagen._id+'.'+ext)
+        client.publish("images", imagen.toString())
+        fs.rename(req.body.archivo.path, "public/images/"+imagen._id+'.'+ext);
         res.redirect("/app/imagenes/"+imagen._id)
       }
       else{
+        console.log(imagen)
         res.render(err)
       }
     })
