@@ -70,8 +70,9 @@ router.route("/imagenes")
     })
 
   })
-  .post(function(req,res){    
-    console.log(req.files.file)
+  .post(function(req,res){ 
+    console.log(req.fields+"\n")   
+    console.log(req.files.archivo)
     var ext = extension(req.files.archivo.name)
     var data = {
       titulo: req.fields.titulo,
