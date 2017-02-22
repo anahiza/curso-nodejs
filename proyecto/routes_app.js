@@ -6,7 +6,13 @@ var fs = require('fs')
 var extension = require('file-extension');
 
 router.get("/", function (req, res) {
-  res.render("app/home");
+  Imagen.find({})
+    .populate("creator")
+    .exec(function(err,imagenes){
+      if(err) console.log(err)
+       res.render("app/home", {imagenes:imagenes});
+      
+    })
 })
 
 //* RESt *//
