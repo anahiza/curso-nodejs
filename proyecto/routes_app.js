@@ -34,11 +34,9 @@ router.route("/imagenes/:id")
   })
 
   .put(function(req,res){
-      var extension = req.body.archivo.name.split(".").pop();
       res.locals.imagen.titulo = req.body.titulo
       res.locals.imagen.save(function (err){
         if (!err){
-          fs.rename(req.body.archivo.path, "public/images/"+imagen._id+"."+extension)
           res.render("app/imagenes/show")
         }
         else {

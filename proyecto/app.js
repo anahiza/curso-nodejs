@@ -1,11 +1,12 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var User = require('./models/users').User;
-var cookieSession = require('cookie-session');
+var session = require('express-session');
 var router_app = require("./routes_app");
 var session_middleware = require("./middlewares/session")
 var methodOverride = require("method-override");
 var formidable = require('express-formidable');
+var RedisStore = require('connect-redis')(session)
 
 var app = express();
 app.use('/public',express.static('public'));
@@ -13,10 +14,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'pug')
 
-app.use(cookieSession({
-  name: "session",
-  keys: ["llave-1", "llave-2"]
-}));
+var sessionMiddleware = session ( {
+  store: new RedisStore({}),
+  secret: "superultra secretword"
+})
+
+app.use(sessionMiddleware)
 
 
 app.get("/", function (req, res) {
