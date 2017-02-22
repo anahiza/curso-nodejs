@@ -1,5 +1,5 @@
 var express = require('express');
-var bodyParser = require('body-parser');
+//var bodyParser = require('body-parser');
 var User = require('./models/users').User;
 var session = require('express-session');
 var router_app = require("./routes_app");
@@ -13,8 +13,8 @@ var realtime = require("./realtime")
 var app = express();
 var server = http.Server(app)
 app.use('/public',express.static('public'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'pug')
 
 var sessionMiddleware = session ( {
@@ -42,10 +42,10 @@ app.get("/login", function(req, res){
 })
 
 app.post("/users", function (req, res) {
-  var user = new User({email:req.body.email,
-                      password: req.body.password,
-                      password_confirmation:   req.body.password_confirmation,
-                      username: req.body.username
+  var user = new User({email:req.fields.email,
+                      password: req.fields.password,
+                      password_confirmation:   req.fields.password_confirmation,
+                      username: req.fields.username
                     });
   user.save().then(function(user_new){
     res.send(user_new);
@@ -60,14 +60,22 @@ app.post("/users", function (req, res) {
 })
 
 app.post("/sessions", function (req, res) {
-  User.findOne({email: req.body.email, password: req.body.password}, function(err, docs){
-    req.session.user_id = docs._id;
-    res.redirect("/app");
+  User.findOne({email: req.fields.email, password: req.fields.password}, function(err, docs){
+    if (err) res.send(String(err));
+    if (user) {
+      req.session.user_id = docs._id;
+      res.redirect("/app");      
+    }
+    else {
+      res.send("Usuario o contraseña Incorrectos")
+    }
   })
 })
 app.use(methodOverride("_method"))
 app.use("/app", session_middleware)
 app.use("/app", router_app);
 app.use(formidable({ keepExtensions: true}))
-server.listen(3000);
+server.listen(3000, function () {
+  console.log("Aplicacion iniciada")
+});
 

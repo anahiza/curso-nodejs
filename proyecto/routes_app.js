@@ -37,7 +37,7 @@ router.route("/imagenes/:id")
   })
 
   .put(function(req,res){
-      res.locals.imagen.titulo = req.body.titulo
+      res.locals.imagen.titulo = req.fields.titulo
       res.locals.imagen.save(function (err){
         if (!err){
           res.render("app/imagenes/show")
@@ -70,10 +70,11 @@ router.route("/imagenes")
     })
 
   })
-  .post(function(req,res){
-    var ext = extension(req.body.archivo.name)
+  .post(function(req,res){    
+    console.log(req.files.file)
+    var ext = extension(req.files.archivo.name)
     var data = {
-      titulo: req.body.titulo,
+      titulo: req.fields.titulo,
       creator: res.locals.user._id,
       extension: ext
     }
@@ -88,7 +89,7 @@ router.route("/imagenes")
         }
         
         client.publish("images", JSON.stringigy(imgJSON))
-        fs.rename(req.body.archivo.path, "public/images/"+imagen._id+'.'+ext);
+        fs.rename(req.files.archivo.path, "public/images/"+imagen._id+'.'+ext);
         res.redirect("/app/imagenes/"+imagen._id)
       }
       else{
