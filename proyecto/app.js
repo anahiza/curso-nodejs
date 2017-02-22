@@ -36,7 +36,7 @@ app.get("/login", function(req, res){
 
 app.post("/users", function (req, res) {
   var user = new User({email:req.body.email,
-                      password: req.body.password, 
+                      password: req.body.password,
                       password_confirmation:   req.body.password_confirmation,
                       username: req.body.username
                     });
@@ -48,11 +48,11 @@ app.post("/users", function (req, res) {
       res.send("No pudimos guardar tus datos");
     }
   });
-  
-  
+
+
 })
 
-app.post("/sessions", function (req, res) {  
+app.post("/sessions", function (req, res) {
   User.findOne({email: req.body.email, password: req.body.password}, function(err, docs){
     req.session.user_id = docs._id;
     res.redirect("/app");
@@ -61,5 +61,6 @@ app.post("/sessions", function (req, res) {
 app.use(methodOverride("_method"))
 app.use("/app", session_middleware)
 app.use("/app", router_app);
-app.use(formidable({keepExtensions: true}))
+app.use(formidable({ keepExtensions: true}))
 app.listen(3000);
+

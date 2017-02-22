@@ -1,7 +1,6 @@
 extends ../../layout.pug
 block contenido
-  div(class="img-container")
-    h1=imagen.titulo
-    img(src="/public/images/#{imagen._id}.#{imagen.extension}")
-    if(typeof imagen.creator != "undefined")
-      p Por (#{imagen.creator.email})
+  h1=imagen.titulo
+  img("src+/public/imagenes/"+#{imagen._id}.#{imagen.extension})
+  if(typeof imagen.creator != "undefined")
+    p Por (#{imagen.creator.email})
